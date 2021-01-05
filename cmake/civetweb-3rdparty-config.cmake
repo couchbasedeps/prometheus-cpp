@@ -33,6 +33,8 @@ target_compile_definitions(civetweb
     NO_CACHING
     NO_FILES
     SOCKET_TIMEOUT_QUANTUM=200
+    USE_SERVER_STATS
+    STOP_FLAG_NEEDS_LOCK
 )
 
 target_compile_options(civetweb
