@@ -46,6 +46,12 @@ void Exposer::RemoveCollectable(const std::weak_ptr<Collectable>& collectable,
   endpoint.RemoveCollectable(collectable);
 }
 
+std::weak_ptr<Collectable> Exposer::GetMetaCollectable(const std::string& uri) {
+  std::lock_guard<std::mutex> lock{mutex_};
+  auto& endpoint = GetEndpointForUri(uri);
+  return endpoint.GetMetaRegistry();
+}
+
 std::vector<int> Exposer::GetListeningPorts() const {
   return server_->getListeningPorts();
 }

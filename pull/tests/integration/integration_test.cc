@@ -243,5 +243,23 @@ TEST_F(IntegrationTest, shouldSendBodyAsUtf8) {
   EXPECT_THAT(metrics.contentType, HasSubstr("utf-8"));
 }
 
+TEST_F(IntegrationTest, removeMetaCollectable) {
+  const std::string counter_name = "example_total";
+  auto registry = RegisterSomeCounter(counter_name, default_metrics_path_);
+
+  const auto metrics = FetchMetrics(default_metrics_path_);
+  ASSERT_THAT(metrics.body, HasSubstr("example_total"));
+  ASSERT_THAT(metrics.body, HasSubstr("exposer_transferred_bytes_total"));
+
+  auto metaCollectable = exposer_->GetMetaCollectable(default_metrics_path_);
+  exposer_->RemoveCollectable(metaCollectable, default_metrics_path_);
+  ASSERT_FALSE(metaCollectable.expired());
+
+  const auto metricsNoMeta = FetchMetrics(default_metrics_path_);
+  EXPECT_THAT(metricsNoMeta.body, HasSubstr("example_total"));
+  EXPECT_THAT(metricsNoMeta.body,
+              Not(HasSubstr("exposer_transferred_bytes_total")));
+}
+
 }  // namespace
 }  // namespace prometheus
