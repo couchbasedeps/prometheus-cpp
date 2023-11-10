@@ -30,6 +30,7 @@ class Endpoint {
   void RemoveCollectable(const std::weak_ptr<Collectable>& collectable);
 
   const std::string& GetURI() const;
+  std::weak_ptr<Registry> GetMetaRegistry() const;
 
  private:
   CivetServer& server_;

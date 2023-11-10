@@ -49,5 +49,9 @@ void Endpoint::RemoveCollectable(
 
 const std::string& Endpoint::GetURI() const { return uri_; }
 
+std::weak_ptr<Registry> Endpoint::GetMetaRegistry() const {
+  return endpoint_registry_;
+}
+
 }  // namespace detail
 }  // namespace prometheus
